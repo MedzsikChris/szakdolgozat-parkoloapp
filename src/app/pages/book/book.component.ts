@@ -127,10 +127,10 @@ export class BookComponent implements OnInit {
     sunday.setDate(sunday.getDate() + 4);
     sunday.setHours(23, 59, 59, 999);
 
-    /*if (from < monday || to > sunday) {
-      alert('Csak az aktuális hétfőtől péntekig lehet foglalni.');
+    if (from < monday || to > sunday) {
+      this.alertService.showError('Csak az aktuális hétfőtől péntekig lehet foglalni.');
       return;
-    }*/
+    }
 
     // Felhasználó már foglalt?
     const activeBookingSnapshot = await this.firestore.collection('bookings', ref =>
