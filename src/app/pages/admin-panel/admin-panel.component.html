@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Admin panel</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Foglalások kezelése</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="bookings.length > 0; else noBookings">
+        <ion-item *ngFor="let booking of bookings">
+          <ion-label>
+            <h2>{{ booking.parkingId }} – {{ booking.plate }}</h2>
+            <p>
+              {{ formatDate(booking.from) }} - {{ formatDate(booking.to) }}
+              | <strong>{{ booking.status || 'active' }}</strong>
+            </p>
+            <p><small>Felhasználó: {{ booking.userId }}</small></p>
+          </ion-label>
+          <ion-badge slot="end" [color]="booking.status === 'cancelled' ? 'danger' : 'success'">
+            {{ booking.status || 'active' }}
+          </ion-badge>
+          <ion-button
+            slot="end"
+            fill="clear"
+            color="danger"
+            *ngIf="(booking.status || 'active') !== 'cancelled'"
+            (click)="cancelBooking(booking.id)">Törlés</ion-button>
+        </ion-item>
+      </ion-list>
+      <ng-template #noBookings>
+        <p>Nincs foglalás.</p>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Bejelentett szabálytalanságok</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="reports.length > 0; else noReports">
+        <ion-item *ngFor="let report of reports">
+          <ion-label>
+            <h2>Bejelentett rendszám: {{ report.licensePlate }}</h2>
+            <p>Indok: {{ report.reason }}</p>
+            <p *ngIf="report.createdAt">{{ report.createdAt.toDate() | date:'yyyy-MM-dd HH:mm' }}</p>
+          </ion-label>
+          <ion-button fill="outline" color="danger" slot="end" (click)="deleteReport(report.id)"> Törlés </ion-button>
+        </ion-item>
+      </ion-list>
+      <ng-template #noReports>
+        <p>Nincs bejelentett szabálytalanság.</p>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Felhasználók és rendszámaik</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="users.length > 0; else noUsers">
+        <ion-item *ngFor="let user of users">
+          <ion-label>
+            <h2>{{ user.email || 'Névtelen felhasználó' }}</h2>
+            <p *ngIf="user.licensePlates && user.licensePlates.length > 0">
+              <ion-chip *ngFor="let plate of user.licensePlates">{{ plate }}</ion-chip>
+            </p>
+            <p *ngIf="!user.licensePlates || user.licensePlates.length === 0">Nincs megadott rendszám.</p>
+            <p><strong>Warnok száma:</strong> {{ user.warns?.length || 0 }}</p>
+          </ion-label>
+          <ion-button slot="end" color="warning" (click)="warnUser(user)">⚠️ Warn</ion-button>
+        </ion-item>
+      </ion-list>
+      <ng-template #noUsers>
+        <p>Nincs regisztrált felhasználó.</p>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

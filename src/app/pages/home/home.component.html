@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="openProfile()">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Főoldal</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="authService.logout()">
+        Kijelentkezés
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-card *ngIf="banCountdown > 0" color="danger">
+  <ion-card-header>
+    <ion-card-title>🚫 Tiltva vagy</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    Nem tudsz foglalni addig, amíg le nem jár a büntetésed.<br />
+    ⏳ Hátralévő idő: <strong>{{ formatCountdown(banCountdown) }}</strong>
+  </ion-card-content>
+</ion-card>
+
+<!--<ion-card class="ion-text-center time-card">
+  <ion-card-content>
+    <ion-text color="dark">
+      <h2><ion-icon name="calendar-outline"></ion-icon> {{ now | date: 'fullDate' }}</h2>
+      <h3><ion-icon name="time-outline"></ion-icon> {{ now | date: 'shortTime' }}</h3>
+    </ion-text>
+  </ion-card-content>
+</ion-card>-->
+
+<!--<ion-card *ngIf="weather">
+  <ion-card-header>
+    <ion-card-title>Időjárás: {{ weather.name }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p>🌡️ {{ weather.main.temp }}°C</p>
+    <p>☁️ {{ weather.weather[0].description }}</p>
+    <p>💨 Szél: {{ weather.wind.speed }} m/s</p>
+  </ion-card-content>
+</ion-card>-->
+
+<ion-content class="ion-padding">
+  <ion-button expand="block" color="warning" routerLink="/admin" *ngIf="isAdmin">
+    Admin panel
+  </ion-button>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Szia, {{ displayName || 'felhasználó' }}!</ion-card-title>
+      <ion-card-subtitle>Üdvözlünk az autós parkoló alkalmazásban!</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button expand="block" routerLink="/book">Parkolóhely foglalása</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Aktív foglalásod</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Foglalásodból fennmaradt idő: <strong>{{ remainingTime }}</strong>
+      <ion-button expand="block" color="medium" routerLink="/my-bookings">Saját foglalásaim</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

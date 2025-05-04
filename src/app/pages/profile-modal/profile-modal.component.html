@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profil szerkesztés</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Bezárás</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="stacked">Név</ion-label>
+    <ion-input [(ngModel)]="displayName"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Rendszám hozzáadása</ion-label>
+    <ion-input [(ngModel)]="newPlate"></ion-input>
+  </ion-item>
+  <ion-button expand="block" (click)="addPlate()">Hozzáadás</ion-button>
+
+  <ion-list>
+    <ion-item *ngFor="let plate of licensePlates">
+      <ion-label>{{ plate }}</ion-label>
+      <ion-button fill="clear" color="danger" slot="end" (click)="removePlate(plate)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="primary" (click)="save()">Mentés</ion-button>
+</ion-content>

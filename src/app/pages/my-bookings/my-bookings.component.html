@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Saját foglalásaim</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Aktív foglalásaid</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="activeBookings.length > 0; else nincsAktiv">
+      <ion-item *ngFor="let booking of activeBookings">
+        <ion-label>
+          <h2>{{ booking.parkingId }} – {{ booking.plate }}</h2>
+          <p>{{ booking.from.toDate() | date:'short' }} → {{ booking.to.toDate() | date:'short' }}</p>
+        </ion-label>
+        <ion-button color="danger" (click)="deleteBooking(booking.id)">Törlés</ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  
+  <ng-template #nincsAktiv>
+    <ion-card-content><p>Nincs aktív foglalásod.</p></ion-card-content>
+  </ng-template>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Lejárt foglalások</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="expiredBookings.length > 0; else nincsLejart">
+      <ion-item *ngFor="let booking of expiredBookings">
+        <ion-label>
+          <h2>{{ booking.parkingId }} – {{ booking.plate }}</h2>
+          <p>{{ booking.from.toDate() | date:'short' }} → {{ booking.to.toDate() | date:'short' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Törölt foglalások</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="cancelledBookings.length > 0; else nincsTorolt">
+      <ion-item *ngFor="let booking of cancelledBookings">
+        <ion-label>
+          <h2>{{ booking.parkingId }} – {{ booking.plate }}</h2>
+          <p>{{ booking.from.toDate() | date:'short' }} → {{ booking.to.toDate() | date:'short' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  
+  <ng-template #nincsTorolt>
+    <ion-card-content><p>Nincs törölt foglalásod.</p></ion-card-content>
+  </ng-template>
+  
+  <ng-template #nincsLejart>
+    <ion-card-content><p>Nincs lejárt foglalásod.</p></ion-card-content>
+  </ng-template>
+  
+</ion-content>

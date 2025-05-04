@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Foglalás</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openReportModal()">
+        <ion-icon name="alert-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Szűrés parkolótípus szerint</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-checkbox [(ngModel)]="filters.normal" (ionChange)="applyFilters()"> Normál </ion-checkbox><br />
+    <ion-checkbox [(ngModel)]="filters.disabled" (ionChange)="applyFilters()"> Mozgáskorlátozott </ion-checkbox><br />
+    <ion-checkbox [(ngModel)]="filters.covered" (ionChange)="applyFilters()"> Fedett </ion-checkbox>
+  </ion-card-content>
+</ion-card>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Válassz parkolót</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label>Parkoló kiválasztása</ion-label>
+      <ion-select [(ngModel)]="selectedLotId" (ionChange)="onLotChange()">
+        <ion-select-option *ngFor="let lot of parkingLots" [value]="lot.id">
+          {{ lot.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-card-content>
+</ion-card>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Parkoló térkép</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="parking-container" *ngIf="selectedLot">
+        <img *ngIf="selectedLot?.imageUrl" [src]="selectedLot.imageUrl" class="parking-map" />
+        <ng-container *ngFor="let spot of filteredSpots">
+          <button
+            class="parking-spot-button"
+            [style.top]="spot.top"
+            [style.left]="spot.left"
+            [style.backgroundColor]="
+              spot.booked ? 'red' : selectedSpot?.name === spot.name ? 'blue' : 'green'
+            "
+            (click)="selectSpot(spot, $event)">
+            {{ spot.name }}
+          </button>
+        </ng-container>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card *ngIf="selectedSpot">
+    <ion-card-header>
+      <ion-card-title>Kiválasztott: {{ selectedSpot.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Típus:</strong> {{ selectedSpot.type }}</p>
+      <ion-item>
+        <ion-label position="stacked">Rendszám</ion-label>
+        <ion-select [(ngModel)]="selectedPlate">
+          <ion-select-option *ngFor="let plate of licensePlates" [value]="plate">
+            {{ plate }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Kezdés dátuma</ion-label>
+        <ion-datetime display-format="YYYY-MM-DD" [(ngModel)]="fromDate"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Vége dátuma</ion-label>
+        <ion-datetime display-format="YYYY-MM-DD" [(ngModel)]="toDate"></ion-datetime>
+      </ion-item>
+
+      <ion-button expand="block" color="success" (click)="book()">
+        Foglalás mentése
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

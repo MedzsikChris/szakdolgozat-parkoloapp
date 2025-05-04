@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Szabálytalanság bejelentése</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Bezár</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="stacked">Rendszám</ion-label>
+    <ion-input [(ngModel)]="licensePlate"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Indok</ion-label>
+    <ion-select [(ngModel)]="reason">
+      <ion-select-option *ngFor="let r of reasons" [value]="r">
+        {{ r }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="block" (click)="submitReport()">Bejelentés küldése</ion-button>
+</ion-content>

@@ -1,0 +1,34 @@
+.parking-map {
+  width: 100%;
+  height: auto;
+  max-width: 400px; // vagy 600px, amekkora neked tetszik desktopon
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+@media (min-width: 768px) {
+  .parking-map {
+    max-width: 500px;
+  }
+}
+
+.parking-spot-button {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.parking-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px; // vagy amit szeretnél
+  margin: 0 auto;
+
+  // Ezzel megtartjuk az arányt (pl. 3:2 képarány esetén 66.66%)
+  aspect-ratio: 3 / 2;
+}
